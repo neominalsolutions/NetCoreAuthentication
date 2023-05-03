@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewData["Title"] = "Login";
+}
+
+@model LoginInputModel
+
+<h1>Login</h1>
+
+
+
+<form asp-route="loginRoute" method="post">
+  <input type="text" class="form-control" asp-for="Email" />
+  <br />
+  <input class="form-control" asp-for="Password" />
+  <br />
+  <input class="form-check-inline" asp-for="RememberMe" /> Beni Hatırla
+  <br />
+  <input class="btn btn-primary"  type="submit" value="Login" />
+</form>
+
+

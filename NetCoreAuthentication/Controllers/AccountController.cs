@@ -29,13 +29,15 @@ namespace NetCoreAuthentication.Controllers
         claim.Add(new Claim("UserName", "test"));
         claim.Add(new Claim("Email", model.Email));
         claim.Add(new Claim("UserId", Guid.NewGuid().ToString()));
+        claim.Add(new Claim("Role", "Manager"));
         claim.Add(new Claim("Role", "Admin"));
+        //claim.Add(new Claim("User", "Delete")); // permission
 
         //HttpContext.User.IsInRole("")
 
         // ClaimsIdentity bu sınfı üzerinden yukarıdaki cliamler ile login olabiliriz.
         // oturum açacak kullanıcı kimlik bilgisi
-        var claimsIdentity = new ClaimsIdentity(claim, CookieAuthenticationDefaults.AuthenticationScheme,nameType:"UserName",roleType:"Role");
+        var claimsIdentity = new ClaimsIdentity(claim, CookieAuthenticationDefaults.AuthenticationScheme,nameType:"Email",roleType:"Role");
         var principle = new ClaimsPrincipal(claimsIdentity);
 
         var authProps = new AuthenticationProperties
@@ -62,6 +64,15 @@ namespace NetCoreAuthentication.Controllers
       await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme); // Oturumdan güvenli çıkış yapmamızı sağlar.
 
       return Redirect("/login");
+    }
+
+    // Eğer login değilsek ve yetkimiz yoksa o zaman bu sayfaya yönlendirip kullanıcıyı bilgilendirmeliyiz.
+    [HttpGet("/unauthorized")]
+    public IActionResult UnAuthorized()
+    {
+      var returnUrl = HttpContext.Request.Query["ReturnUrl"];
+
+      return View();
     }
   }
 }

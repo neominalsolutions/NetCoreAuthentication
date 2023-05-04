@@ -18,6 +18,16 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
   opt.SlidingExpiration = true; // 20 dk da bir oturumu arttýr.
 });
 
+builder.Services.AddAuthorization(policy =>
+{
+  policy.AddPolicy("UserDeletePolicy", options =>
+  {
+    options.RequireAuthenticatedUser(); // kimlik doðrulamasý gerekiyor
+    options.RequireClaim("User", "Delete"); // User ClaimType Delete Value'suna sadece izin ver.
+    options.RequireRole("Manager"); // Kullanýcý Manager Rolüne sahip olmalýdýr.
+  });
+});
+
 
 
 var app = builder.Build();

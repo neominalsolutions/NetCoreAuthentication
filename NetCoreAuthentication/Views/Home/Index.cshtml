@@ -10,6 +10,38 @@
 
 @if(User.Identity.IsAuthenticated)
 {
+
+ if (User.IsInRole("Admin"))
+  {
+    <span>Sadece Admin Yetkisi olan görebilir</span>
+  }
+  <br />
+
+
+  if (User.IsInRole("Manager"))
+  {
+    <span>Sadece Manager Yetkisi olan görebilir</span>
+  }
+
+  <br />
+
+  if (User.IsInRole("Supervisor"))
+  {
+    <span>Sadece Supervisor Yetkisi olan görebilir</span>
+  }
+
+  <br />
+
+  // kullanıcın User Delete tipinde bir yetkisi var mı ?
+  if(User.HasClaim(x=> x.Type == "User" && x.Value == "Delete"))
+  {
+    <button>User Delete</button>
+  }
+
+  <br />
+  
+
+
   <span>Welcome @User.Identity.Name</span>
   <a asp-controller="Account" asp-action="LogOut">Oturumu Kapat</a>
 }
